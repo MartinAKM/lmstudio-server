@@ -2,14 +2,19 @@ from openai import OpenAI
 import os
 from settings.setting import system_prompt
 
-def call(query:str, context_documents:str):
+def call(query:str, context_documents:str, model_request:str):
     client = OpenAI(base_url=os.getenv('API_LINK_LMSTUDIO'), api_key="lm-studio")
 
     prompt = system_prompt + f'\n\n### CONTEXTO RECUPERADO:\n{context_documents}'
     
+    if model_request:
+        model = model_request
+    else:
+        model = os.getenv('MODEL_LMSTUDIO')
+    
     try:
         response = client.chat.completions.create(
-            model=os.getenv('MODEL_LMSTUDIO'),
+            model=model,
             messages=[
                 { 'role': 'system', 'content': prompt },
                 { 'role': 'user', 'content': query }

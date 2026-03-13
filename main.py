@@ -26,5 +26,5 @@ def test():
 
 @app.post('/response')
 def response(request:Request):
-    answer = call(request.query, request.context_documents)
+    answer = call(request.query, request.context_documents, request.model)
     return StreamingResponse(answer, media_type="text/plain")
